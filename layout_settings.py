@@ -1,5 +1,5 @@
-from script.sub.zone_extend import ZoneDirection as Direction
-from script.sub.zone_extend import ZoneExtend
+from script.zone_extend import ZoneDirection as Direction
+from script.zone_extend import ZoneExtend
 
 margin = 70
 

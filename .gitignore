@@ -7,3 +7,5 @@ layout-hotkeys.json
 layout-templates.json
 /settings.json
 custom-layouts.json_backup.json
+.env
+backup

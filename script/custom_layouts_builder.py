@@ -1,8 +1,10 @@
-from script.sub.zone_extend import *
+from datetime import datetime
+import os
+from script.zone_extend import *
 import json
-from data.input.custom_zone_extend_layouts import *
+from layout_settings import *
 import shutil
-from script.sub.zone_extend import ZoneDirection as Direction
+from script.zone_extend import ZoneDirection as Direction
 
 
 class CustomLayoutsBuilder:
@@ -12,8 +14,8 @@ class CustomLayoutsBuilder:
     に加えて、
     margin,calc_dir(計算方向)など追加
     """
-
-    custom_layouts_path = "custom-layouts.json"
+    fancy_zones_folder = os.environ["fancy_zones_folder"]
+    custom_layouts_path = f"{fancy_zones_folder}/custom-layouts.json"
 
     def __init__(self) -> None:
         self.custom_layouts: dict = {}
@@ -23,12 +25,14 @@ class CustomLayoutsBuilder:
         pass
 
     def read_custom_layouts(self):
-        with open(self.custom_layouts_path, "rb") as f:
+        with open(f"{self.fancy_zones_folder}/custom-layouts.json", "rb") as f:
             self.custom_layouts = json.load(f)
         print(self.custom_layouts)
 
     def backup_layouts(self):
-        shutil.copy(self.custom_layouts_path, f"{self.custom_layouts_path}_backup.json")
+        os.makedirs("backup", exist_ok=True)
+        now = datetime.now().strftime("%Y%m%d%H%M%S")
+        shutil.copyfile(self.custom_layouts_path, f"backup/custom-layouts_{now}.json")
 
     # need custom layout
 

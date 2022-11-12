@@ -9,11 +9,11 @@
             "type": "python",
             "request": "launch",
             // "program": "${file}",
-            "program": "${workspaceFolder}/tool/script/custom_layouts_builder.py",
+            "program": "${workspaceFolder}/script/custom_layouts_builder.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "env": {
-                "PYTHONPATH": "${workspaceFolder}/tool"
+                "PYTHONPATH": "${workspaceFolder}"
             },
             "justMyCode": true
         }
