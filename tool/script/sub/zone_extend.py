@@ -14,12 +14,12 @@ class ZoneExtend:
         y_percent: float = 0,
         width_percent: float = 1,
         height_percent: float = 1,
-        margin_percent: int = 0,
+        # margin_percent: int = 0,
         dir: ZoneDirection = ZoneDirection.up_left
     ) -> None:
         self.x_percent = x_percent
         self.y_percent = y_percent
         self.width_percent = width_percent
         self.height_percent = height_percent
-        self.margin = margin_percent
-        self.dir = dir
+        # self.margin_parcent = margin_percent
+        self.direction = dir

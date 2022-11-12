@@ -2,6 +2,7 @@ from script.sub.zone_extend import *
 import json
 from data.input.custom_zone_extend_layouts import zones
 import shutil
+from script.sub.zone_extend import ZoneDirection as Direction
 
 
 class CustomLayoutsBuilder:
@@ -32,8 +33,10 @@ class CustomLayoutsBuilder:
     # need custom layout
 
     def set_zones(self):
-        width = self.custom_layouts["custom-layouts"][0]["info"]["ref-width"]
-        height = self.custom_layouts["custom-layouts"][0]["info"]["ref-height"]
+        width = 2000
+        self.custom_layouts["custom-layouts"][0]["info"]["ref-width"] = 2000
+        height = 2000
+        self.custom_layouts["custom-layouts"][0]["info"]["ref-height"] = 2000
         self.custom_layouts["custom-layouts"][0]["info"]["zones"] = self.generate_zones(width, height)
         with open(self.custom_layouts_path, "w") as f:
             json.dump(self.custom_layouts, f, indent=2)
@@ -60,11 +63,19 @@ class CustomLayoutsBuilder:
 
         width = int(display_size_x*zone.width_percent)
         height = int(display_size_y*zone.height_percent)
-        width -= zone.margin
-        height -= zone.margin
+        # margin = int(2000*zone.margin_parcent)
+        # width -= margin
+        # height -= margin
 
         x = int(display_size_x*zone.x_percent)
+        # x += margin
+        if zone.direction in [Direction.up_right, Direction.down_right]:
+            x = display_size_x-x-width
+
         y = int(display_size_y*zone.y_percent)
+        # y += margin
+        if zone.direction in [Direction.down_left, Direction.down_right]:
+            y = display_size_y-y-height
 
         return {
             "X": x,
