@@ -8,7 +8,8 @@
             "name": "Python: 現在のファイル",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            // "program": "${file}",
+            "program": "${workspaceFolder}/tool/script/custom_layouts_builder.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "env": {
