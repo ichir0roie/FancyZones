@@ -38,5 +38,7 @@ zones = [
 ]
 
 
-display_definition_x = 3840
-display_difinition_y = 2160
+# this is adjusted by app , so don't need change.
+# if you setup for display not 16:9,need change your resolution
+display_resolution_x = 3840
+display_resolution_y = 2160

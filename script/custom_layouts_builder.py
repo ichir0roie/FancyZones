@@ -37,9 +37,9 @@ class CustomLayoutsBuilder:
     # need custom layout
 
     def set_zones(self):
-        width = display_definition_x
+        width = display_resolution_x
         self.custom_layouts["custom-layouts"][0]["info"]["ref-width"] = width
-        height = display_difinition_y
+        height = display_resolution_y
         self.custom_layouts["custom-layouts"][0]["info"]["ref-height"] = height
         self.custom_layouts["custom-layouts"][0]["info"]["zones"] = self.generate_zones(width, height)
         with open(self.custom_layouts_path, "w") as f:
