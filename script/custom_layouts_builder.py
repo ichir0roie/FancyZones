@@ -2,7 +2,7 @@ from datetime import datetime
 import os
 from script.zone_extend import *
 import json
-from layout_settings import *
+from layouts.sample import *
 import shutil
 from script.zone_extend import ZoneDirection as Direction
 

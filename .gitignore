@@ -9,3 +9,6 @@ layout-templates.json
 custom-layouts.json_backup.json
 .env
 backup
+
+layouts/*
+!layouts/sample.py
