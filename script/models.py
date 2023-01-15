@@ -1,4 +1,5 @@
 
+
 class ZoneDirection:
     up_left = 0
     up_right = 1
@@ -12,14 +13,20 @@ class ZoneExtend:
         self,
         x: float = 0,
         y: float = 0,
-        width_percent: float = 1,
-        height_percent: float = 1,
+        width: float = 0,
+        height: float = 0,
         margin: int = 0,
         dir: ZoneDirection = ZoneDirection.up_left
     ) -> None:
         self.x = x
         self.y = y
-        self.width_percent = width_percent
-        self.height_percent = height_percent
+        self.width = width
+        self.height = height
         self.margin = margin
         self.direction = dir
+
+
+class LayoutExtend:
+    zone_list: list[ZoneExtend] = []
+    display_resolution_x: int = 1600
+    display_resolution_y: int = 900

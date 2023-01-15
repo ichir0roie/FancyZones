@@ -1,10 +1,10 @@
 from datetime import datetime
 import os
-from script.zone_extend import *
-import json
-from layouts.sample import *
+from script.models import *
 import shutil
-from script.zone_extend import ZoneDirection as Direction
+from script.models import ZoneDirection as D
+
+import json
 
 
 class CustomLayoutsBuilder:
@@ -17,10 +17,9 @@ class CustomLayoutsBuilder:
     fancy_zones_folder = os.environ["fancy_zones_folder"]
     custom_layouts_path = f"{fancy_zones_folder}/custom-layouts.json"
 
-    def __init__(self) -> None:
+    def __init__(self, layouts_list: list[LayoutExtend]) -> None:
         self.custom_layouts: dict = {}
-        self.backup_layouts()
-        self.read_custom_layouts()
+        self.layout_list = layouts_list
 
         pass
 
@@ -36,27 +35,37 @@ class CustomLayoutsBuilder:
 
     # need custom layout
 
-    def set_zones(self):
-        width = display_resolution_x
-        self.custom_layouts["custom-layouts"][0]["info"]["ref-width"] = width
-        height = display_resolution_y
-        self.custom_layouts["custom-layouts"][0]["info"]["ref-height"] = height
-        self.custom_layouts["custom-layouts"][0]["info"]["zones"] = self.generate_zones(width, height)
+    def set_layout_list(self):
+        for position, layout in enumerate(self.layout_list):
+            self.set_layout(layout, position)
         with open(self.custom_layouts_path, "w") as f:
             json.dump(self.custom_layouts, f, indent=2)
+        with open("output.json", "w") as f:
+            json.dump(self.custom_layouts, f, indent=2)
 
-    def generate_zones(self, ref_width: int, ref_height: int) -> list[dict]:
+    def set_layout(self, layout: LayoutExtend, position: int):
+        width = layout.display_resolution_x
+        height = layout.display_resolution_y
+        # width = 1000
+        # height = 1000
+        self.custom_layouts["custom-layouts"][position]["info"]["ref-width"] = int(width)
+        self.custom_layouts["custom-layouts"][position]["info"]["ref-height"] = int(height)
+        self.custom_layouts["custom-layouts"][position]["info"]["zones"] = self.generate_zones(
+            layout.zone_list, width, height
+        )
 
-        zone_list = []
-        for zone in zones:
-            zone_list.append(
+    def generate_zones(self, zone_list: list[ZoneExtend], ref_width: int, ref_height: int) -> list[dict]:
+
+        output_zone_json = []
+        for zone in zone_list:
+            output_zone_json.append(
                 self.generate_zone_dict(
                     zone,
                     ref_width,
                     ref_height
                 )
             )
-        return zone_list
+        return output_zone_json
 
     def generate_zone_dict(
         self,
@@ -65,29 +74,30 @@ class CustomLayoutsBuilder:
         display_size_y: int
     ) -> dict:
 
-        width = int(display_size_x*zone.width_percent)
-        height = int(display_size_y*zone.height_percent)
-        # margin = int(2000*zone.margin_parcent)
+        # width = int(display_size_x*zone.width_percent)
+        # height = int(display_size_y*zone.height_percent)
+        width = zone.width
+        height = zone.height
         margin = zone.margin
         width -= margin
         height -= margin
 
         x = zone.x
-        if zone.direction in [Direction.up_right, Direction.down_right]:
+        if zone.direction in [D.up_right, D.down_right]:
             x = display_size_x-x-width
 
         y = zone.y
-        if zone.direction in [Direction.down_left, Direction.down_right]:
+        if zone.direction in [D.down_left, D.down_right]:
             y = display_size_y-y-height
 
         return {
-            "X": x,
-            "Y": y,
-            "width": width,
-            "height": height,
+            "X": int(x),
+            "Y": int(y),
+            "width": int(width),
+            "height": int(height),
         }
 
-
-if __name__ == "__main__":
-    clb = CustomLayoutsBuilder()
-    clb.set_zones()
+    def run(self):
+        self.backup_layouts()
+        self.read_custom_layouts()
+        self.set_layout_list()
